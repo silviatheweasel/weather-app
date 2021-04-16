@@ -1,9 +1,9 @@
 import { useState } from "react";
 import './App.css';
 import { SearchBar } from "../SearchBar/SearchBar";
-import { DisplayWeather } from '../DisplayWeather/DisplayWeather';
+import { DisplayCurrentWeather } from '../DisplayWeather/DisplayCurrentWeather';
 
-const url = "https://api.openweathermap.org/data/2.5/weather?";
+const url = "https://api.openweathermap.org/data/2.5/";
 const apiKey = "62ebb02f66f4c684e38253b126fa394c";
 
 function App() {
@@ -12,21 +12,34 @@ function App() {
       setSearchTerm(target.value);
   }
 
-  const [data, setData] = useState(null);
+  const [currentWeather, setCurrentWeather] = useState(null);
   const sendApiRequest = () => {
-    const endpoint = url + "q=" + searchTerm + "&appid=" + apiKey + "&units=metric";
-    console.log(endpoint);
-    fetch(endpoint, {cache: 'no-cache'}).then(response => {
+    const currentWeatherEndpoint = url + "weather?q=" + searchTerm + "&appid=" + apiKey + "&units=metric";
+    const forcastWeatherEndpoint = url + "forecast?q=" + searchTerm + "&appid=" + apiKey + "&units=metric" + "&cnt=3";
+    console.log(currentWeatherEndpoint);
+    fetch(currentWeatherEndpoint).then(response => {
       if (response.ok) {
         return response.json();
       }
-      alert("Invalid request, please enter a valid city.")
+      throw new Error("Request failed!");
     }, networkError => {
-      throw new Error ("Request failed!");
+      console.log(networkError);
     }).then((jsonResponse) => {
       console.log(jsonResponse);
-      setData(jsonResponse);
+      setCurrentWeather(jsonResponse);
     });
+
+    fetch(forcastWeatherEndpoint).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("Request failed!");
+    }, (networkError) => {
+      console.log(networkError.message);
+    }).then((jsonResponse) => {
+      console.log(jsonResponse);
+    });
+
   }
 
   const handleSubmit = (event) => {
@@ -41,8 +54,8 @@ function App() {
         searchTerm={searchTerm}
         handleSubmit={handleSubmit}
         />
-      <DisplayWeather
-        data={data}
+      <DisplayCurrentWeather
+        currentWeather={currentWeather}
       />
     </main>  
   )
