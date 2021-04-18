@@ -1,10 +1,13 @@
 import { useState } from "react";
 import './App.css';
 import { SearchBar } from "../SearchBar/SearchBar";
-import { DisplayCurrentWeather } from '../DisplayWeather/DisplayCurrentWeather';
+import { DisplayCurrentWeather } from "../DisplayWeather/DisplayCurrentWeather";
+import { DisplayHourlyWeather } from "../DisplayWeather/DisplayHourlyWeather";
 
-const url = "https://api.openweathermap.org/data/2.5/";
+const weatherUrl = "https://api.openweathermap.org/data/2.5/";
 const apiKey = "62ebb02f66f4c684e38253b126fa394c";
+const geoUrl = "https://geocode.xyz/?locate=";
+const geoPrams = "&geoit=JSON";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,34 +16,31 @@ function App() {
   }
 
   const [currentWeather, setCurrentWeather] = useState(null);
-  const sendApiRequest = () => {
-    const currentWeatherEndpoint = url + "weather?q=" + searchTerm + "&appid=" + apiKey + "&units=metric";
-    const forcastWeatherEndpoint = url + "forecast?q=" + searchTerm + "&appid=" + apiKey + "&units=metric" + "&cnt=3";
-    console.log(currentWeatherEndpoint);
-    fetch(currentWeatherEndpoint).then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Request failed!");
-    }, networkError => {
-      console.log(networkError);
-    }).then((jsonResponse) => {
-      console.log(jsonResponse);
-      setCurrentWeather(jsonResponse);
-    });
+  const [hourlyWeather, setHourlyWeather] = useState(null);
 
-    fetch(forcastWeatherEndpoint).then((response) => {
+
+  const sendApiRequest = () => {
+    const geoEndPoint = geoUrl + searchTerm + geoPrams;
+    fetch(geoEndPoint).then((response) => {
       if (response.ok) {
         return response.json();
       }
       throw new Error("Request failed!");
     }, (networkError) => {
       console.log(networkError.message);
-    }).then((jsonResponse) => {
+    }).then(jsonResponse => {
+      const weatherEndpoint = weatherUrl + "onecall?lat=" + jsonResponse.latt + "&lon=" + jsonResponse.longt + "&exclude=minutely,alerts&appid=" + apiKey + "&units=metric";
+      console.log(weatherEndpoint);
+      return fetch(weatherEndpoint);
+    }).then(response => {
+      return response.json();
+    }).then (jsonResponse => {
       console.log(jsonResponse);
-    });
-
-  }
+      setCurrentWeather(jsonResponse.current);
+      console.log(currentWeather);
+      setHourlyWeather(jsonResponse.hourly);
+      console.log(hourlyWeather);
+    })
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -56,6 +56,9 @@ function App() {
         />
       <DisplayCurrentWeather
         currentWeather={currentWeather}
+      />
+      <DisplayHourlyWeather
+        hourlyWeather={hourlyWeather}
       />
     </main>  
   )
