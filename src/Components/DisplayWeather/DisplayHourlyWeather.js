@@ -1,9 +1,9 @@
-export const DisplayHourlyWeather = ({ hourlyWeather }) => { 
+export const DisplayHourlyWeather = ({ hourlyWeather, timezone }) => { 
     if (hourlyWeather) {
         return (
-            <ul className="forecast-content">
+            <ul className="hourly-content">
                     {hourlyWeather.map((data) => {
-                         const myDateTime = new Date(data.dt*1000).toLocaleString('en-GB', { timeZone: 'UTC' });
+                         const myDateTime = new Date(data.dt*1000).toLocaleString('en-GB', { timeZone: timezone });
                          const myTime = myDateTime.substring(myDateTime.length-8, myDateTime.length-3);
                          const iconUrl = "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png";
 
@@ -16,7 +16,7 @@ export const DisplayHourlyWeather = ({ hourlyWeather }) => {
                                </img>
                                 <p>{myTime}</p>
                                 <p>{data.weather[0].description}</p>
-                                <p>{data.temp}°C</p>
+                                <p>{data.temp}°</p>
                             </li>
                         )}                   
                     )}
@@ -25,6 +25,5 @@ export const DisplayHourlyWeather = ({ hourlyWeather }) => {
     }
     return (
         <div></div>
-    )
-    
+    )   
 }

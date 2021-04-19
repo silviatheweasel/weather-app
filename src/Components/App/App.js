@@ -3,6 +3,7 @@ import './App.css';
 import { SearchBar } from "../SearchBar/SearchBar";
 import { DisplayCurrentWeather } from "../DisplayWeather/DisplayCurrentWeather";
 import { DisplayHourlyWeather } from "../DisplayWeather/DisplayHourlyWeather";
+import { DisplayDailyWeather } from "../DisplayWeather/DisplayDailyWeather";
 
 const weatherUrl = "https://api.openweathermap.org/data/2.5/";
 const apiKey = "62ebb02f66f4c684e38253b126fa394c";
@@ -15,9 +16,10 @@ function App() {
       setSearchTerm(target.value);
   }
 
+  const [timezone, setTimezone] = useState("UTC");
   const [currentWeather, setCurrentWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null);
-
+  const [dailyWeather, setDailyWeather] = useState(null);
 
   const sendApiRequest = () => {
     const geoEndPoint = geoUrl + searchTerm + geoPrams;
@@ -25,22 +27,26 @@ function App() {
       if (response.ok) {
         return response.json();
       }
-      throw new Error("Request failed!");
-    }, (networkError) => {
-      console.log(networkError.message);
+      throw new Error("Oops, something went wrong!");
+    }, networkError => {
+        console.log(networkError.message)
     }).then(jsonResponse => {
       const weatherEndpoint = weatherUrl + "onecall?lat=" + jsonResponse.latt + "&lon=" + jsonResponse.longt + "&exclude=minutely,alerts&appid=" + apiKey + "&units=metric";
-      console.log(weatherEndpoint);
       return fetch(weatherEndpoint);
     }).then(response => {
+      if (response.ok) {
       return response.json();
-    }).then (jsonResponse => {
-      console.log(jsonResponse);
-      setCurrentWeather(jsonResponse.current);
-      console.log(currentWeather);
-      setHourlyWeather(jsonResponse.hourly);
-      console.log(hourlyWeather);
+    }
+    throw new Error("Oops, something went wrong!");
+  }, networkError => {
+      console.log(networkError.message)
+  }).then (jsonResponse => {
+    setCurrentWeather(jsonResponse.current);
+    setHourlyWeather(jsonResponse.hourly);
+    setDailyWeather(jsonResponse.daily);
+    setTimezone(jsonResponse.timezone);
     })
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -54,12 +60,22 @@ function App() {
         searchTerm={searchTerm}
         handleSubmit={handleSubmit}
         />
-      <DisplayCurrentWeather
-        currentWeather={currentWeather}
-      />
-      <DisplayHourlyWeather
-        hourlyWeather={hourlyWeather}
-      />
+      <div id="weather-display">
+        <DisplayCurrentWeather
+          currentWeather={currentWeather}
+          searchTerm={searchTerm}
+          timezone={timezone}
+          
+        />
+        <DisplayHourlyWeather
+          hourlyWeather={hourlyWeather}
+          timezone={timezone}
+        />
+        <DisplayDailyWeather
+          dailyWeather={dailyWeather} 
+          timezone={timezone}
+        />
+      </div>
     </main>  
   )
 }
