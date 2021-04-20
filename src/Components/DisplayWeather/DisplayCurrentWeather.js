@@ -1,4 +1,4 @@
-export const DisplayCurrentWeather = ({currentWeather, searchTerm, timezone }) => {
+export const DisplayCurrentWeather = ({currentWeather, timezone, location }) => {
     if (currentWeather) {
         const { dt, weather, feels_like, temp } = currentWeather;
         const { icon, description } = weather[0];
@@ -9,15 +9,10 @@ export const DisplayCurrentWeather = ({currentWeather, searchTerm, timezone }) =
         const myDate = myDateTime.substring(0, 5);
         const myTime = myDateTime.substring(myDateTime.length-8, myDateTime.length-3);
 
-        const cityName = searchTerm.toLowerCase()
-                                    .split(" ")
-                                    .map(word => word.charAt(0).toUpperCase() + word.substring(1))
-                                    .join(" ");
-
         return (
             <div id="current-content">
                 <p>Updated {myDate}, {myTime}</p>
-                <p><i className="fas fa-map-marker-alt"></i> {cityName}</p>
+                <p><i className="fas fa-map-marker-alt"></i> {location}</p>
                 <img 
                     src={iconUrl}
                     alt="weather icon"

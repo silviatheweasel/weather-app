@@ -1,4 +1,4 @@
-export const DisplayDailyWeather = ({ dailyWeather, timezone }) => {
+export const DisplayDailyWeather = ({ dailyWeather }) => {
     if (dailyWeather) {
         const daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         

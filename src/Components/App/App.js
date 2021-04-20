@@ -7,8 +7,8 @@ import { DisplayDailyWeather } from "../DisplayWeather/DisplayDailyWeather";
 
 const weatherUrl = "https://api.openweathermap.org/data/2.5/";
 const apiKey = "62ebb02f66f4c684e38253b126fa394c";
-const geoUrl = "https://geocode.xyz/?locate=";
-const geoPrams = "&geoit=JSON";
+const geoUrl = "https://maps.googleapis.com/maps/api/geocode/json?";
+const geoApiKey = "AIzaSyBZrejx_2seANji9k--cgRvzep2KIfJrrw";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,10 +20,14 @@ function App() {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null);
   const [dailyWeather, setDailyWeather] = useState(null);
+  const [httpStatusCodes, setHttpStatusCodes] = useState([]);
+  const [location, setLocation] = useState("");
 
   const sendApiRequest = () => {
-    const geoEndPoint = geoUrl + searchTerm + geoPrams;
+    const geoEndPoint = geoUrl + "address=" + searchTerm + "&key=" + geoApiKey;
     fetch(geoEndPoint).then((response) => {
+      setHttpStatusCodes(prev => [response.status, ...prev]);
+      console.log(response.status);
       if (response.ok) {
         return response.json();
       }
@@ -31,9 +35,14 @@ function App() {
     }, networkError => {
         console.log(networkError.message)
     }).then(jsonResponse => {
-      const weatherEndpoint = weatherUrl + "onecall?lat=" + jsonResponse.latt + "&lon=" + jsonResponse.longt + "&exclude=minutely,alerts&appid=" + apiKey + "&units=metric";
+      const lattitude = jsonResponse.results[0].geometry.location.lat;
+      const longtitude = jsonResponse.results[0].geometry.location.lng;
+      const weatherEndpoint = weatherUrl + "onecall?lat=" + lattitude + "&lon=" + longtitude + "&exclude=minutely,alerts&appid=" + apiKey + "&units=metric";
+      setLocation(jsonResponse.results[0].formatted_address);
       return fetch(weatherEndpoint);
     }).then(response => {
+      setHttpStatusCodes(prev => [response.status, ...prev]);
+      console.log(response.status);
       if (response.ok) {
       return response.json();
     }
@@ -60,11 +69,11 @@ function App() {
         searchTerm={searchTerm}
         handleSubmit={handleSubmit}
         />
-      <div id="weather-display">
+      {(httpStatusCodes[0] === 200 && httpStatusCodes[1] === 200) && <div id="weather-display">
         <DisplayCurrentWeather
           currentWeather={currentWeather}
-          searchTerm={searchTerm}
           timezone={timezone}
+          location={location}
           
         />
         <DisplayHourlyWeather
@@ -73,9 +82,12 @@ function App() {
         />
         <DisplayDailyWeather
           dailyWeather={dailyWeather} 
-          timezone={timezone}
+          
         />
-      </div>
+      </div>}
+      {httpStatusCodes[1] === 400 && <div id="400-page">
+        <p>Did you type something wrong?<br></br>We don't seem to find a place matching what you typed. <br></br>Please try again.</p>
+      </div>}
     </main>  
   )
 }

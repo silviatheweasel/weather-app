@@ -1,5 +1,6 @@
 export const DisplayHourlyWeather = ({ hourlyWeather, timezone }) => { 
     if (hourlyWeather) {
+
         return (
             <ul className="hourly-content">
                     {hourlyWeather.map((data) => {
