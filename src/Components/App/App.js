@@ -1,75 +1,97 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './App.css';
 import { SearchBar } from "../SearchBar/SearchBar";
 import { DisplayCurrentWeather } from "../DisplayWeather/DisplayCurrentWeather";
 import { DisplayHourlyWeather } from "../DisplayWeather/DisplayHourlyWeather";
 import { DisplayDailyWeather } from "../DisplayWeather/DisplayDailyWeather";
+import { getGeoInfo, getCityName } from "../../Utilities/GeoData";
+import { getWeatherInfo } from "../../Utilities/GetWeather";
 
-const weatherUrl = "https://api.openweathermap.org/data/2.5/";
-const apiKey = "62ebb02f66f4c684e38253b126fa394c";
-const geoUrl = "https://maps.googleapis.com/maps/api/geocode/json?";
-const geoApiKey = "AIzaSyBZrejx_2seANji9k--cgRvzep2KIfJrrw";
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const handleChange = ({target}) => {
-      setSearchTerm(target.value);
-  }
 
+  const [searchTerm, setSearchTerm] = useState("");
   const [timezone, setTimezone] = useState("UTC");
   const [currentWeather, setCurrentWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null);
   const [dailyWeather, setDailyWeather] = useState(null);
-  const [httpStatusCodes, setHttpStatusCodes] = useState([]);
   const [location, setLocation] = useState("");
+  // const [httpStatusCodes, setHttpStatusCodes] = useState([]);
 
-  const sendApiRequest = () => {
-    const geoEndPoint = geoUrl + "address=" + searchTerm + "&key=" + geoApiKey;
-    fetch(geoEndPoint).then((response) => {
-      setHttpStatusCodes(prev => [response.status, ...prev]);
-      console.log(response.status);
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Oops, something went wrong!");
-    }, networkError => {
-        console.log(networkError.message)
-    }).then(jsonResponse => {
-      const lattitude = jsonResponse.results[0].geometry.location.lat;
-      const longtitude = jsonResponse.results[0].geometry.location.lng;
-      const weatherEndpoint = weatherUrl + "onecall?lat=" + lattitude + "&lon=" + longtitude + "&exclude=minutely,alerts&appid=" + apiKey + "&units=metric";
-      setLocation(jsonResponse.results[0].formatted_address);
-      return fetch(weatherEndpoint);
-    }).then(response => {
-      setHttpStatusCodes(prev => [response.status, ...prev]);
-      console.log(response.status);
-      if (response.ok) {
-      return response.json();
-    }
-    throw new Error("Oops, something went wrong!");
-  }, networkError => {
-      console.log(networkError.message)
-  }).then (jsonResponse => {
-    setCurrentWeather(jsonResponse.current);
-    setHourlyWeather(jsonResponse.hourly);
-    setDailyWeather(jsonResponse.daily);
-    setTimezone(jsonResponse.timezone);
-    })
+  const getGeoWeather = () => {
+    getGeoInfo(searchTerm.label).then(({ latitude, longitude, location }) => {
+      setLocation(location);
+      getWeatherInfo(longitude, latitude).then(({ timezone, current, daily, hourly }) => {
+        setTimezone(timezone);
+        setCurrentWeather(current);
+        setDailyWeather(daily);
+        setHourlyWeather(hourly);
+      });
+    });
   }
+
+  useEffect(() => {
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    };
+
+    const success = (pos) => {
+      let crd = pos.coords;
+      const latitude = crd.latitude.toFixed(6);
+      const longitude = crd.longitude.toFixed(6);
+
+      getWeatherInfo(longitude, latitude).then(({ timezone, current, daily, hourly }) => {
+        setTimezone(timezone);
+        setCurrentWeather(current);
+        setDailyWeather(daily);
+        setHourlyWeather(hourly);
+      });
+
+      getCityName(latitude, longitude).then((cityName) => {
+        setLocation(cityName);
+        setSearchTerm({ value: cityName });
+      });
+    }
+    
+    const errors = (err) => {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    if (navigator.geolocation) {
+      navigator.permissions
+      .query({ name: "geolocation" })
+      .then((result) => {
+        if (result.state === "granted") {
+          console.log(result.state);
+          navigator.geolocation.getCurrentPosition(success);
+        } else if (result.state === "prompt") {
+          console.log(result.state);
+          navigator.geolocation.getCurrentPosition(success, errors, options);
+        } else if (result.state === "denied") {
+          console.log(result.state);
+        }
+      })
+    } else {
+      alert("Sorry, your device doesn't support geolocation.")
+    }
+  },[]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    sendApiRequest();
+    getGeoWeather();
   }
 
   return (
     <main>
       <SearchBar 
-        handleChange={handleChange}
+        setSearchTerm={setSearchTerm}
         searchTerm={searchTerm}
         handleSubmit={handleSubmit}
         />
-      {(httpStatusCodes[0] === 200 && httpStatusCodes[1] === 200) && <div id="weather-display">
+      <div id="weather-display">
+        {(!DisplayCurrentWeather) && <p>Loading...</p>} 
         <DisplayCurrentWeather
           currentWeather={currentWeather}
           timezone={timezone}
@@ -84,10 +106,10 @@ function App() {
           dailyWeather={dailyWeather} 
           
         />
-      </div>}
-      {httpStatusCodes[1] === 400 && <div id="400-page">
+      </div>
+      {/* <div id="400-page">
         <p>Did you type something wrong?<br></br>We don't seem to find a place matching what you typed. <br></br>Please try again.</p>
-      </div>}
+      </div> */}
     </main>  
   )
 }

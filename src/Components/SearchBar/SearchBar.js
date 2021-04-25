@@ -1,4 +1,8 @@
-export const SearchBar = ({ handleChange, searchTerm, handleSubmit }) => {
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+
+export const SearchBar = ({ setSearchTerm, searchTerm, handleSubmit }) => {
+
+      
     return (
         <div>
             <form 
@@ -6,18 +10,30 @@ export const SearchBar = ({ handleChange, searchTerm, handleSubmit }) => {
                 onSubmit={handleSubmit}
                 autoComplete="off"
             >
-                <input 
-                    type="text" 
-                    name="search"
-                    id="search-input"
-                    value={searchTerm}
-                    onChange={handleChange}
-                    placeholder="London, England Weather"
-                >
-                </input>
+                <GooglePlacesAutocomplete
+                        apiKey="AIzaSyBZrejx_2seANji9k--cgRvzep2KIfJrrw"
+                        selectProps={{
+                            searchTerm,
+                            onChange: setSearchTerm,
+                            autoFocus: true,
+                            isClearable: true,
+                            placeholder: "City or address",
+                            className: "react-select-container",
+                            theme: theme => ({
+                                ...theme,
+                                borderRadius: 0,
+                                colors: {
+                                  ...theme.colors,
+                                  primary25: 'hotpink',
+                                  primary: 'black',
+                                },
+                              })}
+                          }
+                    />
+
                 <button 
                     id="search-btn"
-                    type="submit"               
+                    type="submit" 
                 >
                     <i className="fas fa-search"></i> 
                 </button>
