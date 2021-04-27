@@ -10,17 +10,21 @@ export const DisplayCurrentWeather = ({currentWeather, timezone, location }) => 
         const myTime = myDateTime.substring(myDateTime.length-8, myDateTime.length-3);
 
         return (
-            <div id="current-content">
-                <p>Updated {myDate}, {myTime}</p>
-                <p><i className="fas fa-map-marker-alt"></i> {location}</p>
-                <img 
-                    src={iconUrl}
-                    alt="weather icon"
-                >
-                </img>
-                <p>{description}</p>
-                <p>{Math.round(temp)}°</p>
-                <p>Feels like {Math.round(feels_like)}°</p>
+            <div id="current-forecast">
+                <p className="small">As of {myDate}, {myTime}</p>
+                <p className="location"><i className="fas fa-map-marker-alt"></i> {location}</p>
+                <div className="weather-overview">
+                    <img 
+                        src={iconUrl}
+                        alt="weather icon"
+                    >
+                    </img>
+                    <p className="extra-large">{Math.round(temp)}°</p>
+                </div>
+                <div className="weather-description">
+                    <p className="small">{description}</p>
+                    <p className="small">Feels like {Math.round(feels_like)}°</p>
+                </div>
             </div>
         )
     }

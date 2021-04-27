@@ -25,7 +25,6 @@ export const getGeoInfo = (searchTerm) => {
     
 export const getCityName = (lat, lnt) => {
   const endPoint = `${geoUrl}latlng=${lat},${lnt}&key=${geoApiKey}&rresult_type=formatted_address`;
-  console.log(endPoint);
   return fetch(endPoint).then((response) => {
     if (response.ok) {
       return response.json();

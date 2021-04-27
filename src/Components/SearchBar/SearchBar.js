@@ -2,7 +2,6 @@ import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 export const SearchBar = ({ setSearchTerm, searchTerm, handleSubmit }) => {
 
-      
     return (
         <div>
             <form 
@@ -17,14 +16,14 @@ export const SearchBar = ({ setSearchTerm, searchTerm, handleSubmit }) => {
                             onChange: setSearchTerm,
                             autoFocus: true,
                             isClearable: true,
-                            placeholder: "City or address",
+                            placeholder: "City, postcode or address",
                             className: "react-select-container",
                             theme: theme => ({
                                 ...theme,
                                 borderRadius: 0,
                                 colors: {
                                   ...theme.colors,
-                                  primary25: 'hotpink',
+                                  primary25: 'tomato',
                                   primary: 'black',
                                 },
                               })}

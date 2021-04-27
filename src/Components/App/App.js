@@ -10,13 +10,25 @@ import { getWeatherInfo } from "../../Utilities/GetWeather";
 
 function App() {
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const dayOrNight = () => {
+    const time = new Date().getHours();
+    if (time > 6 && time < 19) {
+      document.getElementById("weather-page").className = "day";
+    } else {
+      document.getElementById("weather-page").className = "night";
+    }
+  }
+
+  useEffect(() => {
+    dayOrNight();
+  }, []);
+
+  const [searchTerm, setSearchTerm] = useState();
   const [timezone, setTimezone] = useState("UTC");
   const [currentWeather, setCurrentWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null);
   const [dailyWeather, setDailyWeather] = useState(null);
   const [location, setLocation] = useState("");
-  // const [httpStatusCodes, setHttpStatusCodes] = useState([]);
 
   const getGeoWeather = () => {
     getGeoInfo(searchTerm.label).then(({ latitude, longitude, location }) => {
@@ -29,7 +41,6 @@ function App() {
       });
     });
   }
-
   useEffect(() => {
     const options = {
       enableHighAccuracy: true,
@@ -51,7 +62,6 @@ function App() {
 
       getCityName(latitude, longitude).then((cityName) => {
         setLocation(cityName);
-        setSearchTerm({ value: cityName });
       });
     }
     
@@ -74,17 +84,20 @@ function App() {
         }
       })
     } else {
-      alert("Sorry, your device doesn't support geolocation.")
+      console.log("Device doesn't support geolocation")
     }
   },[]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    getGeoWeather();
+    if (searchTerm) {
+      getGeoWeather();
+    }
+    return;
   }
 
   return (
-    <main>
+    <main id="weather-page">
       <SearchBar 
         setSearchTerm={setSearchTerm}
         searchTerm={searchTerm}
