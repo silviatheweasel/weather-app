@@ -1,11 +1,11 @@
-%small {
-    font-size: 15px;
-    color: white;
-    line-height: 24px;
+@mixin text($fontSize, $fontColor, $fontWeight, $lineHeight, $letterSpacing) {
+    font-size: $fontSize;
+    color: $fontColor;
+    font-weight: $fontWeight;
+    line-height: $lineHeight;
+    letter-spacing: $letterSpacing;
 }
 
-%medium {
-    font-size: 17px;
-    color: white;
-    line-height: 26px;
+@mixin background($name) {
+    background: url("../App/#{$name}.jpg") no-repeat fixed;
 }

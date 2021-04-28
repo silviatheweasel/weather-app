@@ -11,24 +11,44 @@ import { getWeatherInfo } from "../../Utilities/GetWeather";
 function App() {
 
   const dayOrNight = () => {
-    const time = new Date().getHours();
-    if (time > 6 && time < 19) {
-      document.getElementById("weather-page").className = "day";
-    } else {
-      document.getElementById("weather-page").className = "night";
-    }
+    if (currentWeather) {
+      const myDateTime = new Date(currentWeather.dt*1000).toLocaleString('en-GB', { timeZone: timezone });
+      const myTime = parseInt(myDateTime.substring(myDateTime.length-8, myDateTime.length-6));
+      const weather = currentWeather.weather[0].main;
+      console.log(weather);
+      console.log(myTime);
+      if (myTime > 6 && myTime < 19) {
+        switch (weather) {
+          case "Clouds": 
+            document.getElementById("weather-page").className = "cloudy";
+            break;
+          case "Clear":
+            document.getElementById("weather-page").className = "clear";
+            break;
+          case "Rain":
+            document.getElementById("weather-page").className = "rainy";
+            break;
+          default:  
+            document.getElementById("weather-page").className = "day";
+            break;
+        }
+      } else {
+        document.getElementById("weather-page").className = "night";
+      }
+    } 
   }
 
+  const [currentWeather, setCurrentWeather] = useState(null);
   useEffect(() => {
     dayOrNight();
-  }, []);
+  }, [currentWeather]);
 
-  const [searchTerm, setSearchTerm] = useState();
+  const [searchTerm, setSearchTerm] = useState(null);
   const [timezone, setTimezone] = useState("UTC");
-  const [currentWeather, setCurrentWeather] = useState(null);
+  const [location, setLocation] = useState("London");
   const [hourlyWeather, setHourlyWeather] = useState(null);
   const [dailyWeather, setDailyWeather] = useState(null);
-  const [location, setLocation] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const getGeoWeather = () => {
     getGeoInfo(searchTerm.label).then(({ latitude, longitude, location }) => {
@@ -38,6 +58,7 @@ function App() {
         setCurrentWeather(current);
         setDailyWeather(daily);
         setHourlyWeather(hourly);
+        setIsLoading(false);
       });
     });
   }
@@ -74,10 +95,8 @@ function App() {
       .query({ name: "geolocation" })
       .then((result) => {
         if (result.state === "granted") {
-          console.log(result.state);
           navigator.geolocation.getCurrentPosition(success);
         } else if (result.state === "prompt") {
-          console.log(result.state);
           navigator.geolocation.getCurrentPosition(success, errors, options);
         } else if (result.state === "denied") {
           console.log(result.state);
@@ -91,6 +110,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (searchTerm) {
+      setIsLoading(true);
       getGeoWeather();
     }
     return;
@@ -98,31 +118,28 @@ function App() {
 
   return (
     <main id="weather-page">
+      
       <SearchBar 
         setSearchTerm={setSearchTerm}
         searchTerm={searchTerm}
         handleSubmit={handleSubmit}
         />
       <div id="weather-display">
-        {(!DisplayCurrentWeather) && <p>Loading...</p>} 
-        <DisplayCurrentWeather
+        {isLoading && <p id="loading-message">Loading...</p>}
+
+        {!isLoading && <DisplayCurrentWeather
           currentWeather={currentWeather}
           timezone={timezone}
-          location={location}
-          
-        />
-        <DisplayHourlyWeather
+          location={location}         
+        />}
+        {!isLoading && <DisplayHourlyWeather
           hourlyWeather={hourlyWeather}
           timezone={timezone}
-        />
-        <DisplayDailyWeather
-          dailyWeather={dailyWeather} 
-          
-        />
+        />}
+        {!isLoading && <DisplayDailyWeather
+          dailyWeather={dailyWeather}         
+        />}
       </div>
-      {/* <div id="400-page">
-        <p>Did you type something wrong?<br></br>We don't seem to find a place matching what you typed. <br></br>Please try again.</p>
-      </div> */}
     </main>  
   )
 }

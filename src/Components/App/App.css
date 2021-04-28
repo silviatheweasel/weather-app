@@ -1,9 +1,3 @@
-#weather-page #weather-display #current-forecast .small, #weather-page #weather-display #hourly-forecast .hourly-list li .small {
-  font-size: 15px;
-  color: white;
-  line-height: 24px;
-}
-
 .App {
   text-align: center;
   width: 100%;
@@ -24,14 +18,27 @@
   background: url("../App/night.jpg") no-repeat fixed;
 }
 
-#weather-page {
+.cloudy {
+  background: url("../App/cloudy.jpg") no-repeat fixed;
+}
+
+.clear {
+  background: url("../App/clear.jpg") no-repeat fixed;
+}
+
+.rainy {
+  background: url("../App/rainy.jpg") no-repeat fixed;
+}
+
+main {
   padding: 40px;
   height: 100vh;
   background-size: cover;
   overflow-y: auto;
+  background: url("../App/general.jpg") no-repeat fixed;
 }
 
-#weather-page #search-bar {
+main #search-bar {
   margin: 30px auto;
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -41,12 +48,12 @@
   display: flex;
 }
 
-#weather-page #search-bar .react-select-container {
+main #search-bar .react-select-container {
   width: 400px;
   display: inline-block;
 }
 
-#weather-page #search-bar #search-btn {
+main #search-bar #search-btn {
   padding: 12px;
   margin-left: 5px;
   border: none;
@@ -54,7 +61,21 @@
   cursor: pointer;
 }
 
-#weather-page #weather-display #current-forecast {
+main #search-bar #search-btn:hover, main #search-bar #search-btn :focus {
+  background-color: #e2e0e0;
+  color: tomato;
+}
+
+main #weather-display #loading-message {
+  font-size: 25px;
+  color: white;
+  font-weight: 400;
+  line-height: 30px;
+  letter-spacing: 0.8px;
+  text-align: center;
+}
+
+main #weather-display #current-forecast {
   margin: auto;
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -62,40 +83,64 @@
   position: relative;
 }
 
-#weather-page #weather-display #current-forecast .location {
-  font-size: 25px;
-  font-weight: 800;
-  line-height: 35px;
-  letter-spacing: 0.7px;
+main #weather-display #current-forecast .small {
+  font-size: 15px;
   color: white;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.8px;
 }
 
-#weather-page #weather-display #current-forecast .weather-overview {
+main #weather-display #current-forecast .location {
+  font-size: 25px;
+  color: white;
+  font-weight: 800;
+  line-height: 35px;
+  letter-spacing: 0.6px;
+}
+
+main #weather-display #current-forecast .weather-overview {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
 }
 
-#weather-page #weather-display #current-forecast .weather-overview .extra-large {
+main #weather-display #current-forecast .weather-overview .extra-large {
   font-size: 45px;
+  color: white;
   font-weight: 600;
+  line-height: 50px;
+  letter-spacing: 0.3px;
+}
+
+main #weather-display #current-forecast .weather-description {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+main #weather-display h2 {
+  margin: 50px 20px;
+  font-size: 35px;
   color: white;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.8px;
 }
 
-#weather-page #weather-display h2 {
-  font-size: 30px;
-  margin: 40px 0;
-  color: white;
-}
-
-#weather-page #weather-display #hourly-forecast {
+main #weather-display #hourly-forecast {
   margin: 40px 0;
 }
 
-#weather-page #weather-display #hourly-forecast .hourly-list {
+main #weather-display #hourly-forecast .hourly-list {
   list-style-type: none;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -103,25 +148,36 @@
   overflow-y: scroll;
 }
 
-#weather-page #weather-display #hourly-forecast .hourly-list li {
-  padding: 10px 10px 10px 0;
+main #weather-display #hourly-forecast .hourly-list li {
+  padding: 10px 10px 30px 0;
   text-align: center;
 }
 
-#weather-page #weather-display #hourly-forecast .hourly-list li .temp {
-  font-weight: 800;
+main #weather-display #hourly-forecast .hourly-list li .small {
+  font-size: 15px;
   color: white;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.3px;
 }
 
-#weather-page #weather-display #daily-forecast {
+main #weather-display #hourly-forecast .hourly-list li .temp {
+  font-size: 17px;
+  color: white;
+  font-weight: 800;
+  line-height: 24px;
+  letter-spacing: 0.3px;
+}
+
+main #weather-display #daily-forecast {
   margin: 40px 0;
 }
 
-#weather-page #weather-display #daily-forecast .daily-list {
+main #weather-display #daily-forecast .daily-list {
   list-style-type: none;
 }
 
-#weather-page #weather-display #daily-forecast .daily-list li {
+main #weather-display #daily-forecast .daily-list li {
   width: 500px;
   margin: 0 auto;
   display: -ms-grid;
@@ -130,18 +186,21 @@
       grid-template-columns: repeat(12, 1fr);
 }
 
-#weather-page #weather-display #daily-forecast .daily-list li .myDay {
+main #weather-display #daily-forecast .daily-list li .myDay {
   -ms-grid-column: 1;
   -ms-grid-column-span: 4;
   grid-column: 1 / span 4;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
-  font-weight: 800;
+  font-size: 17px;
   color: white;
+  font-weight: 800;
+  line-height: 24px;
+  letter-spacing: 0.3px;
 }
 
-#weather-page #weather-display #daily-forecast .daily-list li img {
+main #weather-display #daily-forecast .daily-list li img {
   width: 90px;
   height: auto;
   -ms-grid-column: 5;
@@ -151,7 +210,7 @@
       justify-self: center;
 }
 
-#weather-page #weather-display #daily-forecast .daily-list li .temp {
+main #weather-display #daily-forecast .daily-list li .temp {
   -ms-grid-column: 9;
   -ms-grid-column-span: 4;
   grid-column: 9 / span 4;
@@ -160,7 +219,10 @@
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
-  font-weight: 800;
+  font-size: 17px;
   color: white;
+  font-weight: 800;
+  line-height: 24px;
+  letter-spacing: 0.3px;
 }
 /*# sourceMappingURL=App.css.map */

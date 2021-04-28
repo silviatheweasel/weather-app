@@ -24,7 +24,7 @@ export const SearchBar = ({ setSearchTerm, searchTerm, handleSubmit }) => {
                                 colors: {
                                   ...theme.colors,
                                   primary25: 'tomato',
-                                  primary: 'black',
+                                  primary: 'gray',
                                 },
                               })}
                           }

@@ -13,17 +13,27 @@
 }
 
 .day {
-  background: url("../App/day.jpg") no-repeat fixed;
+  @include background(day);
 }
 .night {
-  background: url("../App/night.jpg") no-repeat fixed;
+  @include background(night);
+}
+.cloudy {
+  @include background(cloudy);
+}
+.clear {
+  @include background(clear);
+}
+.rainy {
+  @include background(rainy);
 }
 
-#weather-page {
+main {
   padding: 40px;
   height: 100vh;
   background-size: cover;
   overflow-y: auto;
+  background: url("../App/general.jpg") no-repeat fixed;
 
   #search-bar {
     margin: 30px auto;
@@ -31,7 +41,7 @@
     display: flex;
     .react-select-container {
       width: 400px;
-      display: inline-block;   
+      display: inline-block;  
     }
     #search-btn {
       padding: 12px;
@@ -39,40 +49,47 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      &:hover, :focus {
+        background-color: rgb(226, 224, 224);
+        color: tomato;
+      }
     }
   }
 
   #weather-display {
+    #loading-message {
+      @include text(25px, white, 400, 30px, 0.8px);
+      text-align: center;
+    }
 
     #current-forecast {
       margin: auto;
       width: fit-content;
       position: relative;
       .small {
-        @extend %small;
+        @include text(15px, white, 400, 24px, 0.8px);
       }
       .location {
-        font-size: 25px;
-        font-weight: 800;
-        line-height: 35px;
-        letter-spacing: 0.7px;
-        color: white;
+        @include text(25px, white, 800, 35px, 0.6px);
       }
       .weather-overview {
         display: flex;
         align-items: center;
+        width: fit-content;
+        margin: 0 auto;
         .extra-large {
-          font-size: 45px;
-          font-weight: 600;
-          color: white;
+          @include text(45px, white, 600, 50px, 0.3px);
         }
+      }
+      .weather-description {
+        width: fit-content;
+        margin: 0 auto;
       }
     }
 
     h2 {
-      font-size: 30px;
-      margin: 40px 0;
-      color: white;
+      margin: 50px 20px;
+      @include text(35px, white, 700, 24px, 0.8px);
     }
 
     #hourly-forecast {
@@ -82,14 +99,13 @@
         display: flex;
         overflow-y: scroll;
         li {
-          padding: 10px 10px 10px 0;
+          padding: 10px 10px 30px 0;
           text-align: center;
           .small {
-            @extend %small;
+            @include text(15px, white, 400, 20px, 0.3px);
           }
           .temp {
-            font-weight: 800;
-            color: white;
+            @include text(17px, white, 800, 24px, 0.3px);
           }
         }
       }
@@ -107,8 +123,7 @@
           .myDay {
             grid-column: 1 / span 4;
             align-self: center;
-            font-weight: 800;
-            color: white;
+            @include text(17px, white, 800, 24px, 0.3px);
           }
           img {
             width: 90px;
@@ -120,8 +135,7 @@
             grid-column: 9 / span 4;
             justify-self: end;
             align-self: center;
-            font-weight: 800;
-            color: white;
+            @include text(17px, white, 800, 24px, 0.3px);
           }
         }
       } 
