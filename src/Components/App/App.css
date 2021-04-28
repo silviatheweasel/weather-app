@@ -1,3 +1,91 @@
+@media only screen and (max-width: 600px) {
+  main {
+    width: 100% !important;
+  }
+  main #search-bar {
+    width: 90% !important;
+  }
+  main #weather-display h2 {
+    text-align: center;
+  }
+  main #weather-display #hourly-forecast .hourly-list li {
+    padding: 10px 10px 30px 0 !important;
+  }
+  main #weather-display #hourly-forecast .hourly-list li img {
+    width: 70px;
+  }
+  main #weather-display #daily-forecast .daily-list li {
+    width: 80% !important;
+  }
+  main #weather-display #daily-forecast .daily-list li img {
+    width: 70px !important;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  main {
+    width: 100% !important;
+    padding: 20px !important;
+  }
+  main #search-bar {
+    width: 95% !important;
+  }
+  main #search-bar #search-btn {
+    padding: 12px;
+  }
+  main #weather-display #current-forecast .small {
+    font-size: 15px;
+    color: white;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.8px;
+  }
+  main #weather-display #current-forecast .location {
+    font-size: 20px;
+    color: white;
+    font-weight: 800;
+    line-height: 35px;
+    letter-spacing: 0.6px;
+  }
+  main #weather-display #current-forecast .weather-overview .extra-large {
+    font-size: 40px;
+    color: white;
+    font-weight: 600;
+    line-height: 50px;
+    letter-spacing: 0.3px;
+  }
+  main #weather-display h2 {
+    display: none;
+  }
+  main #weather-display #hourly-forecast .hourly-list {
+    width: 100% !important;
+  }
+  main #weather-display #hourly-forecast .hourly-list li {
+    padding: 10px 13px 10px 0 !important;
+  }
+  main #weather-display #hourly-forecast .hourly-list li img {
+    width: 45px;
+    height: auto;
+  }
+  main #weather-display #hourly-forecast .hourly-list li .descript {
+    display: none;
+  }
+  main #weather-display #daily-forecast .daily-list {
+    width: 100%;
+  }
+  main #weather-display #daily-forecast .daily-list li {
+    width: 100% !important;
+  }
+  main #weather-display #daily-forecast .daily-list li img {
+    width: 50px !important;
+  }
+}
+
+body, html {
+  max-width: 1900px;
+  overflow: hidden;
+}
+
 .App {
   text-align: center;
   width: 100%;
@@ -40,16 +128,17 @@ main {
 
 main #search-bar {
   margin: 30px auto;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
+  width: 500px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 main #search-bar .react-select-container {
-  width: 400px;
+  width: 90%;
   display: inline-block;
 }
 
@@ -146,10 +235,11 @@ main #weather-display #hourly-forecast .hourly-list {
   display: -ms-flexbox;
   display: flex;
   overflow-y: scroll;
+  width: 100%;
 }
 
 main #weather-display #hourly-forecast .hourly-list li {
-  padding: 10px 10px 30px 0;
+  padding: 10px 12.5px 30px 0;
   text-align: center;
 }
 

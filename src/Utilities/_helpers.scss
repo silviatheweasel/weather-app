@@ -9,3 +9,103 @@
 @mixin background($name) {
     background: url("../App/#{$name}.jpg") no-repeat fixed;
 }
+
+@media only screen and (max-width: 600px) {
+    main {
+        width: 100% !important;   
+        #search-bar {
+            width: 90% !important;
+        }
+
+        #weather-display {             
+            h2 {
+                text-align: center;
+            }
+        
+            #hourly-forecast {
+              .hourly-list {
+                li {
+                  padding: 10px 10px 30px 0 !important;
+                  img {
+                      width: 70px;
+                  }
+                }
+              }
+            }
+        
+            #daily-forecast {
+              .daily-list {
+                li {
+                  width: 80% !important;
+                  img {
+                    width: 70px !important;
+                  }
+                }
+              } 
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 420px) {
+    main {
+        width: 100% !important;   
+        padding: 20px !important;
+        #search-bar {
+            width: 95% !important;
+          #search-btn {
+            padding: 12px;
+          }
+        }
+
+        #weather-display {
+        
+            #current-forecast {
+              .small {
+                @include text(15px, white, 400, 24px, 0.8px);
+              }
+              .location {
+                @include text(20px, white, 800, 35px, 0.6px);
+              }
+              .weather-overview {
+                .extra-large {
+                  @include text(40px, white, 600, 50px, 0.3px);
+                }
+              }
+            }
+        
+            h2 {
+                display: none;
+            }
+        
+            #hourly-forecast {
+              
+              .hourly-list {
+                width: 100% !important;
+                li {
+                  padding: 10px 13px 10px 0 !important;;
+                    img {
+                        width: 45px;
+                        height: auto;
+                    }
+                    .descript {
+                        display: none;
+                    }
+                }
+              }
+            }
+        
+            #daily-forecast {
+              .daily-list {
+                width: 100%;
+                li {
+                  width: 100% !important;
+                  img {
+                    width: 50px !important;
+                  }
+                }
+              } 
+            }
+          }
+    }
+}

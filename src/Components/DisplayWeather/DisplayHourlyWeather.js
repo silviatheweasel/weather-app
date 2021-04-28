@@ -19,7 +19,7 @@ export const DisplayHourlyWeather = ({ hourlyWeather, timezone }) => {
                                     > 
                                     </img>
                                     <p className="temp">{Math.round(data.temp)}°</p>
-                                    <p className="small">{data.weather[0].description}</p>
+                                    <p className="small descript">{data.weather[0].description}</p>
                                 </li>
                             )}                   
                         )}

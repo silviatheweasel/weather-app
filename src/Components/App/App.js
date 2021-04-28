@@ -10,37 +10,31 @@ import { getWeatherInfo } from "../../Utilities/GetWeather";
 
 function App() {
 
-  const dayOrNight = () => {
-    if (currentWeather) {
-      const myDateTime = new Date(currentWeather.dt*1000).toLocaleString('en-GB', { timeZone: timezone });
-      const myTime = parseInt(myDateTime.substring(myDateTime.length-8, myDateTime.length-6));
-      const weather = currentWeather.weather[0].main;
-      console.log(weather);
-      console.log(myTime);
-      if (myTime > 6 && myTime < 19) {
-        switch (weather) {
-          case "Clouds": 
-            document.getElementById("weather-page").className = "cloudy";
-            break;
-          case "Clear":
-            document.getElementById("weather-page").className = "clear";
-            break;
-          case "Rain":
-            document.getElementById("weather-page").className = "rainy";
-            break;
-          default:  
-            document.getElementById("weather-page").className = "day";
-            break;
-        }
-      } else {
-        document.getElementById("weather-page").className = "night";
-      }
-    } 
-  }
-
   const [currentWeather, setCurrentWeather] = useState(null);
   useEffect(() => {
-    dayOrNight();
+      if (currentWeather) {
+        const myDateTime = new Date(currentWeather.dt*1000).toLocaleString('en-GB', { timeZone: currentWeather.timezone });
+        const myTime = parseInt(myDateTime.substring(myDateTime.length-8, myDateTime.length-6));
+        const weather = currentWeather.weather[0].main;
+        if (myTime > 6 && myTime < 19) {
+          switch (weather) {
+            case "Clouds": 
+              document.getElementById("weather-page").className = "cloudy";
+              break;
+            case "Clear":
+              document.getElementById("weather-page").className = "clear";
+              break;
+            case "Rain":
+              document.getElementById("weather-page").className = "rainy";
+              break;
+            default:  
+              document.getElementById("weather-page").className = "day";
+              break;
+          }
+        } else {
+          document.getElementById("weather-page").className = "night";
+        }
+      } 
   }, [currentWeather]);
 
   const [searchTerm, setSearchTerm] = useState(null);
