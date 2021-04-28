@@ -13,8 +13,9 @@ function App() {
   const [currentWeather, setCurrentWeather] = useState(null);
   useEffect(() => {
       if (currentWeather) {
-        const myDateTime = new Date(currentWeather.dt*1000).toLocaleString('en-GB', { timeZone: currentWeather.timezone });
+        const myDateTime = new Date(currentWeather.dt*1000).toLocaleString('en-GB', { timeZone: timezone });
         const myTime = parseInt(myDateTime.substring(myDateTime.length-8, myDateTime.length-6));
+        console.log(myTime);
         const weather = currentWeather.weather[0].main;
         if (myTime > 6 && myTime < 19) {
           switch (weather) {
