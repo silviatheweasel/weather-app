@@ -20,11 +20,11 @@ export const SearchBar = ({ setSearchTerm, searchTerm, handleSubmit }) => {
                             className: "react-select-container",
                             theme: theme => ({
                                 ...theme,
-                                borderRadius: 0,
+                                borderRadius: 10,
                                 colors: {
                                   ...theme.colors,
-                                  primary25: 'tomato',
-                                  primary: 'gray',
+                                  primary25: 'rgb(227, 242, 248)',
+                                  primary: 'transparent',
                                 },
                               })}
                           }

@@ -37,7 +37,7 @@ main {
   height: 100vh;
   background-size: cover;
   overflow-y: auto;
-  background: url("../App/general.jpg") no-repeat fixed;
+  background-color: rgb(31, 31, 31);
 
   #search-bar {
     margin: 30px auto;
@@ -46,17 +46,21 @@ main {
     justify-content: center;
     .react-select-container {
       width: 90%;
-      display: inline-block;  
+      display: inline-block; 
+      margin-right: 5px; 
+      padding: 0;
     }
     #search-btn {
       padding: 12px;
       margin-left: 5px;
       border: none;
-      border-radius: 5px;
+      border-radius: 15px;
+      background-color: rgba(227, 242, 248, 0.6);
+      color: rgb(0, 0, 53);
+      @extend %shadow;
       cursor: pointer;
       &:hover, :focus {
-        background-color: rgb(226, 224, 224);
-        color: tomato;
+        background-color: rgba(255, 255, 255, 0.89);
       }
     }
   }
@@ -68,9 +72,11 @@ main {
     }
 
     #current-forecast {
-      margin: auto;
+      margin: 90px auto;
       width: fit-content;
       position: relative;
+      padding: 40px 200px;
+      @extend %card;
       .small {
         @include text(15px, white, 400, 24px, 0.8px);
       }
@@ -93,8 +99,9 @@ main {
     }
 
     h2 {
-      margin: 50px 20px;
-      @include text(35px, white, 700, 24px, 0.8px);
+      margin: 100px 0 70px 0;
+      @include text(35px, rgba(255, 255, 255, 0.719), 700, 24px, 0.8px);
+      text-align: center;
     }
 
     #hourly-forecast {
@@ -104,8 +111,16 @@ main {
         display: flex;
         overflow-y: scroll;
         width: 100%;
+        padding: 40px 80px 40px 20px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        cursor: pointer;
+        @extend %card;
+        &::-webkit-scrollbar {
+          display: none;
+        }
         li {
-          padding: 10px 12.5px 30px 0;
+          padding: 10px 15px 10px 0;
           text-align: center;
           .small {
             @include text(15px, white, 400, 20px, 0.3px);
@@ -121,10 +136,13 @@ main {
       margin: 40px 0;
       .daily-list {
         list-style-type: none;
+        @extend %card;
+        padding: 30px;
         li {
-          width: 500px;
+          width: 600px;
           margin: 0 auto;
           display: grid;
+          padding:  0 60px;
           grid-template-columns: repeat(12, 1fr);       
           .myDay {
             grid-column: 1 / span 4;

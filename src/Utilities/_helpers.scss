@@ -10,41 +10,74 @@
     background: url("../App/#{$name}.jpg") no-repeat fixed;
 }
 
-@media only screen and (max-width: 600px) {
+%shadow {
+  -webkit-box-shadow: 5px 5px 18px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    5px 5px 18px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         5px 5px 18px 0px rgba(50, 50, 50, 0.75);
+}
+
+%glassEffect {
+  background-color: rgba(227, 242, 248, 0.3);
+  backdrop-filter: blur(10px);
+  @extend %shadow;
+}
+
+%card {
+  border-radius: 30px;
+  @extend %glassEffect;
+}
+
+@media only screen and (max-width: 700px) {
     main {
         width: 100% !important;   
         #search-bar {
-            width: 90% !important;
+          width: 90% !important;
         }
+        #weather-display {   
+          margin-top: 60px !important;
+          h2 {
+            margin: 50px 0 !important;
+          }       
+          #current-forecast {
+            width: 100% !important;
+            margin: 0 !important;
+            padding-left: 30% !important;
+            padding-right: 30% !important;
+          }   
 
-        #weather-display {             
-            h2 {
-                text-align: center;
-            }
-        
-            #hourly-forecast {
-              .hourly-list {
-                li {
-                  padding: 10px 10px 30px 0 !important;
-                  img {
-                      width: 70px;
-                  }
+          #hourly-forecast {
+            .hourly-list {
+              li {
+                width: 500px !important;
+                img {
+                    width: 70px;
                 }
               }
             }
+          }
         
-            #daily-forecast {
-              .daily-list {
-                li {
-                  width: 80% !important;
-                  img {
-                    width: 70px !important;
-                  }
+          #daily-forecast {
+            .daily-list {
+              li {
+                width: 100% !important;
+                img {
+                  width: 70px !important;
                 }
-              } 
-            }
+              }
+            } 
+          }
         }
     }
+}
+
+@media only screen and (max-width: 550px) {
+  li {
+    padding: 0 !important;
+    .myDay {
+      grid-column: 1 / span 2 !important;
+      justify-self: start;
+    }
+  }
 }
 
 @media only screen and (max-width: 420px) {
@@ -52,7 +85,7 @@
         width: 100% !important;   
         padding: 20px !important;
         #search-bar {
-            width: 95% !important;
+            width: 100% !important;
           #search-btn {
             padding: 12px;
           }
@@ -61,6 +94,8 @@
         #weather-display {
         
             #current-forecast {
+              padding-left: 20% !important;
+              padding-right: 20% !important;
               .small {
                 @include text(15px, white, 400, 24px, 0.8px);
               }
