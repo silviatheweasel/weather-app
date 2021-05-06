@@ -3,7 +3,7 @@ export const DisplayCurrentWeather = ({currentWeather, timezone, location }) => 
         const { dt, weather, feels_like, temp } = currentWeather;
         const { icon, description } = weather[0];
 
-        const iconUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+        const iconUrl = "https://openweathermap.org/img/wn/" + icon + "@2x.png";
         
         const myDateTime = new Date(dt*1000).toLocaleString('en-GB', { timeZone: timezone });
         const myDate = myDateTime.substring(0, 5);
