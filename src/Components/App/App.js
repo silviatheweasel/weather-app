@@ -56,9 +56,10 @@ function App() {
       });
     });
   }
+
   useEffect(() => {
     const options = {
-      enableHighAccuracy: true,
+      enableHighAccuracy: false,
       timeout: 5000,
       maximumAge: 0,
     };
@@ -80,24 +81,32 @@ function App() {
       });
     }
     
-    const errors = (err) => {
+    const error = (err) => {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
 
     if (navigator.geolocation) {
-      navigator.permissions
-      .query({ name: "geolocation" })
-      .then((result) => {
-        if (result.state === "granted") {
-          navigator.geolocation.getCurrentPosition(success);
-        } else if (result.state === "prompt") {
-          navigator.geolocation.getCurrentPosition(success, errors, options);
-        } else if (result.state === "denied") {
-          console.log(result.state);
-        }
-      })
+      // navigator.permissions
+      // .query({ name: "geolocation" })
+      // .then((result) => {
+      //   if (result.state === "granted") {
+      //     navigator.geolocation.getCurrentPosition(success);
+      //   } else if (result.state === "prompt") {
+      //     navigator.geolocation.getCurrentPosition(success, errors, options);
+      //   } else if (result.state === "denied") {
+      //     console.log(result.state);
+      //   }
+      // })
+      navigator.geolocation.getCurrentPosition(success, error, options);
+
     } else {
-      console.log("Device doesn't support geolocation")
+      // console.log("Device doesn't support geolocation")
+      getWeatherInfo(51.5074, 0.1278).then(({ timezone, current, daily, hourly }) => {
+        setTimezone(timezone);
+        setCurrentWeather(current);
+        setDailyWeather(daily);
+        setHourlyWeather(hourly);
+      });
     }
   },[]);
 
