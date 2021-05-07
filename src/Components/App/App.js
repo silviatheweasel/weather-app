@@ -55,7 +55,7 @@ function App() {
       });
     });
   }
-  
+
   useEffect(() => {
     const options = {
       enableHighAccuracy: true,
