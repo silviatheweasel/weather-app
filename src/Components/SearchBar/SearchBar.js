@@ -1,6 +1,7 @@
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 export const SearchBar = ({ setSearchTerm, searchTerm, handleSubmit }) => {
+    const geoApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
     return (
         <div>
@@ -10,7 +11,7 @@ export const SearchBar = ({ setSearchTerm, searchTerm, handleSubmit }) => {
                 autoComplete="off"
             >
                 <GooglePlacesAutocomplete
-                        apiKey="AIzaSyBZrejx_2seANji9k--cgRvzep2KIfJrrw"
+                        apiKey={geoApiKey}
                         selectProps={{
                             searchTerm,
                             onChange: setSearchTerm,

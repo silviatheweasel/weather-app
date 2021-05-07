@@ -1,5 +1,5 @@
 const geoUrl = "https://maps.googleapis.com/maps/api/geocode/json?";
-const geoApiKey = "AIzaSyBZrejx_2seANji9k--cgRvzep2KIfJrrw";
+const geoApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
 
 export const getGeoInfo = (searchTerm) => {

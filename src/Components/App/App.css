@@ -47,6 +47,9 @@ main #weather-display #current-forecast, main #weather-display #hourly-forecast 
 }
 
 @media only screen and (max-width: 550px) {
+  #loading-message {
+    font-size: 18px !important;
+  }
   li {
     padding: 0 !important;
   }
@@ -125,6 +128,7 @@ main #weather-display #current-forecast, main #weather-display #hourly-forecast 
 body, html {
   max-width: 1900px;
   overflow: hidden;
+  background-color: #e0e0e0;
 }
 
 .App {
@@ -165,6 +169,7 @@ main {
   background-size: cover;
   overflow-y: auto;
   background-color: #1f1f1f;
+  background: url("../App/general.jpg") no-repeat fixed;
 }
 
 main #search-bar {
@@ -195,8 +200,9 @@ main #search-bar #search-btn {
   cursor: pointer;
 }
 
-main #search-bar #search-btn:hover, main #search-bar #search-btn :focus {
+main #search-bar #search-btn:hover, main #search-bar #search-btn :focus, main #search-bar #search-btn :active {
   background-color: rgba(255, 255, 255, 0.89);
+  border: none;
 }
 
 main #weather-display #loading-message {
