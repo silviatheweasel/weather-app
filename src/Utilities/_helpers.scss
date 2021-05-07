@@ -71,6 +71,9 @@
 }
 
 @media only screen and (max-width: 550px) {
+  #loading-message {
+    font-size: 18px !important;
+  }
   li {
     padding: 0 !important;
     .myDay {

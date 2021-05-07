@@ -3,6 +3,7 @@
 body, html {
   max-width: 1900px;
   overflow: hidden;
+  background-color: rgb(224, 224, 224);
 }
 
 .App {
@@ -38,6 +39,7 @@ main {
   background-size: cover;
   overflow-y: auto;
   background-color: rgb(31, 31, 31);
+  @include background(general);
 
   #search-bar {
     margin: 30px auto;
@@ -59,8 +61,9 @@ main {
       color: rgb(0, 0, 53);
       @extend %shadow;
       cursor: pointer;
-      &:hover, :focus {
+      &:hover, :focus, :active {
         background-color: rgba(255, 255, 255, 0.89);
+        border: none;
       }
     }
   }

@@ -7,7 +7,6 @@ import { DisplayDailyWeather } from "../DisplayWeather/DisplayDailyWeather";
 import { getGeoInfo, getCityName } from "../../Utilities/GeoData";
 import { getWeatherInfo } from "../../Utilities/GetWeather";
 
-
 function App() {
 
   const [currentWeather, setCurrentWeather] = useState(null);

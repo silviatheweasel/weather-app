@@ -1,5 +1,5 @@
 const geoUrl = "https://maps.googleapis.com/maps/api/geocode/json?";
-const geoApiKey = "AIzaSyBZrejx_2seANji9k--cgRvzep2KIfJrrw";
+const geoApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
 
 export const getGeoInfo = (searchTerm) => {
@@ -24,7 +24,7 @@ export const getGeoInfo = (searchTerm) => {
 }
     
 export const getCityName = (lat, lnt) => {
-  const endPoint = `${geoUrl}latlng=${lat},${lnt}&key=${geoApiKey}&rresult_type=formatted_address`;
+  const endPoint = `${geoUrl}latlng=${lat},${lnt}&key=${geoApiKey}`;
   return fetch(endPoint).then((response) => {
     if (response.ok) {
       return response.json();
